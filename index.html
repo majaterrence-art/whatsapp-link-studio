@@ -417,252 +417,176 @@
         let qrcodeObj = null;
 
         // Comprehensive Global Country List with Dial Codes & Flags
-         const countries = [
-            { code: "ZA", name: "South Africa", dial: "27", flag: "🇿🇦" },
-            { code: "NG", name: "Nigeria", dial: "234", flag: "🇳🇬" },
-            { code: "US", name: "United States", dial: "1", flag: "🇺🇸" },
-            { code: "GB", name: "United Kingdom", dial: "44", flag: "🇬🇧" },
-            { code: "AE", name: "United Arab Emirates", dial: "971", flag: "🇦🇪" },
-            { code: "IN", name: "India", dial: "91", flag: "🇮🇳" },
-            { code: "KE", name: "Kenya", dial: "254", flag: "🇰🇪" },
-            { code: "GH", name: "Ghana", dial: "233", flag: "🇬🇭" },
-            { code: "ZW", name: "Zimbabwe", dial: "263", flag: "🇿🇼" },
-            { code: "BW", name: "Botswana", dial: "267", flag: "🇧🇼" },
-            { code: "NA", name: "Namibia", dial: "264", flag: "🇳🇦" },
-            { code: "MZ", name: "Mozambique", dial: "258", flag: "🇲🇿" },
-            { code: "ZM", name: "Zambia", dial: "260", flag: "🇿🇲" },
-            { code: "CA", name: "Canada", dial: "1", flag: "🇨🇦" },
-            { code: "AU", name: "Australia", dial: "61", flag: "🇦🇺" },
-            { code: "DE", name: "Germany", dial: "49", flag: "🇩🇪" },
-            { code: "FR", name: "France", dial: "33", flag: "🇫🇷" },
-            { code: "NL", name: "Netherlands", dial: "31", flag: "🇳🇱" },
-            { code: "BR", name: "Brazil", dial: "55", flag: "🇧🇷" },
-            { code: "MX", name: "Mexico", dial: "52", flag: "🇲🇽" },
-            { code: "SA", name: "Saudi Arabia", dial: "966", flag: "🇸🇦" },
-            { code: "SG", name: "Singapore", dial: "65", flag: "🇸🇬" },
-            { code: "PK", name: "Pakistan", dial: "92", flag: "🇵🇰" },
-            { code: "BD", name: "Bangladesh", dial: "880", flag: "🇧🇩" },
-            { code: "PH", name: "Philippines", dial: "63", flag: "🇵🇭" },
-            { code: "ID", name: "Indonesia", dial: "62", flag: "🇮🇩" },
-            { code: "MY", name: "Malaysia", dial: "60", flag: "🇲🇾" },
-            { code: "CN", name: "China", dial: "86", flag: "🇨🇳" },
-            { code: "JP", name: "Japan", dial: "81", flag: "🇯🇵" },
-            { code: "KR", name: "South Korea", dial: "82", flag: "🇰🇷" },
-            { code: "ES", name: "Spain", dial: "34", flag: "🇪🇸" },
-            { code: "IT", name: "Italy", dial: "39", flag: "🇮🇹" },
-            { code: "PT", name: "Portugal", dial: "351", flag: "🇵🇹" },
-            { code: "IE", name: "Ireland", dial: "353", flag: "🇮🇪" },
-            { code: "NZ", name: "New Zealand", dial: "64", flag: "🇳🇿" },
-            { code: "EG", name: "Egypt", dial: "20", flag: "🇪🇬" },
-            { code: "TZ", name: "Tanzania", dial: "255", flag: "🇹🇿" },
-            { code: "UG", name: "Uganda", dial: "256", flag: "🇺🇬" },
-            { code: "RW", name: "Rwanda", dial: "250", flag: "🇷🇼" },
-            { code: "ET", name: "Ethiopia", dial: "251", flag: "🇪🇹" },
-            { code: "CI", name: "Ivory Coast", dial: "225", flag: "🇨🇮" },
-            { code: "CM", name: "Cameroon", dial: "237", flag: "🇨🇲" },
-            { code: "SN", name: "Senegal", dial: "221", flag: "🇸🇳" },
-            { code: "AR", name: "Argentina", dial: "54", flag: "🇦🇷" },
-            { code: "CO", name: "Colombia", dial: "57", flag: "🇨🇴" },
-            { code: "CL", name: "Chile", dial: "56", flag: "🇨🇱" },
-            { code: "PE", name: "Peru", dial: "51", flag: "🇵🇪" },
-            { code: "VE", name: "Venezuela", dial: "58", flag: "🇻🇪" },
-            { code: "RU", name: "Russia", dial: "7", flag: "🇷🇺" },
-            { code: "TR", name: "Turkey", dial: "90", flag: "🇹🇷" },
-            { code: "GR", name: "Greece", dial: "30", flag: "🇬🇷" },
-            { code: "SE", name: "Sweden", dial: "46", flag: "🇸🇪" },
-            { code: "NO", name: "Norway", dial: "47", flag: "🇳🇴" },
-            { code: "DK", name: "Denmark", dial: "45", flag: "🇩🇰" },
-            { code: "FI", name: "Finland", dial: "358", flag: "🇫🇮" },
-            { code: "PL", name: "Poland", dial: "48", flag: "🇵🇱" },
-            { code: "CH", name: "Switzerland", dial: "41", flag: "🇨🇭" },
-            { code: "AT", name: "Austria", dial: "43", flag: "🇦🇹" },
-            { code: "BE", name: "Belgium", dial: "32", flag: "🇧🇪" },
-            { code: "IL", name: "Israel", dial: "972", flag: "🇮🇱" },
-            { code: "QA", name: "Qatar", dial: "974", flag: "🇶🇦" },
-            { code: "KW", name: "Kuwait", dial: "965", flag: "🇰🇼" },
-            { code: "OM", name: "Oman", dial: "968", flag: "🇴🇲" },
-            { code: "BH", name: "Bahrain", dial: "973", flag: "🇧🇭" },
-            { code: "JO", name: "Jordan", dial: "962", flag: "🇯🇴" },
-            { code: "LB", name: "Lebanon", dial: "961", flag: "🇱🇧" },
-            { code: "JM", name: "Jamaica", dial: "1876", flag: "🇯🇲" },
-            { code: "TT", name: "Trinidad & Tobago", dial: "1868", flag: "🇹🇹" },
-            { code: "MU", name: "Mauritius", dial: "230", flag: "🇲🇺" },
-            { code: "SC", name: "Seychelles", dial: "248", flag: "🇸🇨" }
-        ];
+// Comprehensive Global Country List with Dial Codes & Flags
+const countries = [
+    { code: "ZA", name: "South Africa", dial: "27", flag: "ZA" },
+    { code: "NG", name: "Nigeria", dial: "234", flag: "NG" },
+    { code: "US", name: "United States", dial: "1", flag: "US" },
+    { code: "GB", name: "United Kingdom", dial: "44", flag: "GB" },
+    { code: "AE", name: "United Arab Emirates", dial: "971", flag: "AE" },
+    { code: "IN", name: "India", dial: "91", flag: "IN" },
+    { code: "KE", name: "Kenya", dial: "254", flag: "KE" },
+    { code: "GH", name: "Ghana", dial: "233", flag: "GH" },
+    { code: "ZM", name: "Zimbabwe", dial: "263", flag: "ZM" },
+    { code: "BW", name: "Botswana", dial: "267", flag: "BW" },
+    { code: "NA", name: "Namibia", dial: "264", flag: "NA" },
+    { code: "MZ", name: "Mozambique", dial: "258", flag: "MZ" },
+    { code: "ZN", name: "Zambia", dial: "260", flag: "ZN" },
+    { code: "CA", name: "Canada", dial: "1", flag: "CA" },
+    { code: "AU", name: "Australia", dial: "61", flag: "AU" },
+    { code: "DE", name: "Germany", dial: "49", flag: "DE" },
+    { code: "FR", name: "France", dial: "33", flag: "FR" },
+    { code: "NL", name: "Netherlands", dial: "31", flag: "NL" },
+    { code: "BR", name: "Brazil", dial: "55", flag: "BR" },
+    { code: "MX", name: "Mexico", dial: "52", flag: "MX" },
+    { code: "SA", name: "Saudi Arabia", dial: "966", flag: "SA" },
+    { code: "SG", name: "Singapore", dial: "65", flag: "SG" },
+    { code: "PK", name: "Pakistan", dial: "92", flag: "PK" },
+    { code: "QA", name: "Qatar", dial: "974", flag: "QA" },
+    { code: "KW", name: "Kuwait", dial: "965", flag: "KW" },
+    { code: "OM", name: "Oman", dial: "968", flag: "OM" },
+    { code: "BH", name: "Bahrain", dial: "973", flag: "BH" },
+    { code: "JO", name: "Jordan", dial: "962", flag: "JO" },
+    { code: "LB", name: "Lebanon", dial: "961", flag: "LB" },
+    { code: "JM", name: "Jamaica", dial: "1876", flag: "JM" },
+    { code: "TT", name: "Trinidad & Tobago", dial: "1868", flag: "TT" },
+    { code: "MU", name: "Mauritius", dial: "230", flag: "MU" },
+    { code: "SC", name: "Seychelles", dial: "248", flag: "SC" }
+];
 
-        // Populate Country Dropdown
-        function populateCountrySelect() {
-            const select = document.getElementById('countrySelect');
-            select.innerHTML = '';
+// Helper to convert 2-letter country code to Flag Emoji
+function getFlagEmoji(countryCode) {
+    if (!countryCode) return '';
+    return countryCode.toUpperCase().replace(/./g, char => 
+        String.fromCodePoint(127397 + char.charCodeAt(0))
+    );
+}
 
-            countries.forEach(c => {
-                const option = document.createElement('option');
-                option.value = JSON.stringify(c);
-                option.textContent = `${c.flag} ${c.name} (+${c.dial})`;
-                if (c.code === 'ZA') option.selected = true; // Default to South Africa
-                select.appendChild(option);
-            });
-        }
+// Populate Country Dropdown Safely
+function populateCountrySelect() {
+    const select = document.getElementById('countrySelect');
+    if (!select) return;
+    
+    select.innerHTML = '';
 
-        // Clean Phone Number & Prepend Selected Country Dial Code
-        function formatGlobalPhoneNumber(rawNumber, dialCode) {
-            let cleaned = rawNumber.replace(/\D/g, '');
+    countries.forEach(c => {
+        const option = document.createElement('option');
+        const flagEmoji = getFlagEmoji(c.flag || c.code);
+        
+        option.value = JSON.stringify({ ...c, flagEmoji });
+        option.textContent = `${flagEmoji} ${c.name} (+${c.dial})`;
+        
+        if (c.code === 'ZA') option.selected = true; // Default to South Africa
+        select.appendChild(option);
+    });
+}
 
-            // Strip leading zero if typed by user (e.g., 0821234567 -> 821234567)
-            if (cleaned.startsWith('0')) {
-                cleaned = cleaned.substring(1);
-            }
+// Clean Phone Number & Prepend Selected Country Dial Code
+function formatGlobalPhoneNumber(rawNumber, dialCode) {
+    let cleaned = rawNumber.replace(/\D/g, '');
+    
+    if (cleaned.startsWith('0')) {
+        cleaned = cleaned.substring(1);
+    }
+    
+    if (cleaned.startsWith(dialCode)) {
+        cleaned = cleaned.substring(dialCode.length);
+    }
+    
+    return cleaned ? `${dialCode}${cleaned}` : '';
+}
 
-            // If user typed the dial code themselves, strip it out to prevent duplication
-            if (cleaned.startsWith(dialCode)) {
-                cleaned = cleaned.substring(dialCode.length);
-            }
+// Live Preview Updater
+function updatePreview() {
+    const selectElem = document.getElementById('countrySelect');
+    if (!selectElem || !selectElem.value) return;
 
-            return cleaned ? `${dialCode}${cleaned}` : '';
-        }
+    const selectedCountry = JSON.parse(selectElem.value);
 
-        // Live Preview Updater
-        function updatePreview() {
-            const selectVal = document.getElementById('countrySelect').value;
-            if (!selectVal) return;
+    const flagDisp = document.getElementById('flagDisplay');
+    const dialDisp = document.getElementById('dialCodeDisplay');
+    if (flagDisp) flagDisp.textContent = selectedCountry.flagEmoji || getFlagEmoji(selectedCountry.code);
+    if (dialDisp) dialDisp.textContent = '+' + selectedCountry.dial;
 
-            const selectedCountry = JSON.parse(selectVal);
-            
-            // Update input label displays
-            document.getElementById('flagDisplay').textContent = selectedCountry.flag;
-            document.getElementById('dialCodeDisplay').textContent = `+${selectedCountry.dial}`;
+    const rawPhone = document.getElementById('phoneInput') ? document.getElementById('phoneInput').value : '';
+    const message = document.getElementById('messageInput') ? document.getElementById('messageInput').value : '';
+    const formatted = formatGlobalPhoneNumber(rawPhone, selectedCountry.dial);
 
-            const rawPhone = document.getElementById('phoneInput').value;
-            const message = document.getElementById('messageInput').value;
-            
-            const formatted = formatGlobalPhoneNumber(rawPhone, selectedCountry.dial);
+    const prevNum = document.getElementById('previewFormattedNum');
+    const prevBub = document.getElementById('previewBubbleText');
+    if (prevNum) prevNum.textContent = formatted ? `+${formatted}` : `+${selectedCountry.dial}...`;
+    if (prevBub) prevBub.textContent = message.trim() || "Hi Terrence! I'm interested in your services.";
+}
 
-            // Update UI elements in phone preview
-            document.getElementById('previewFormattedNum').textContent = formatted ? `+${formatted}` : `+${selectedCountry.dial}...`;
-            document.getElementById('previewBubbleText').textContent = message.trim() || 'Hi! I am interested in your services.';
-        }
+// Apply Quick Preset Message
+function setPreset(presetText) {
+    const msgInput = document.getElementById('messageInput');
+    if (msgInput) {
+        msgInput.value = presetText;
+        updatePreview();
+    }
+}
 
-        // Apply Quick Preset Message
-        function setPreset(presetText) {
-            document.getElementById('messageInput').value = presetText;
-            updatePreview();
-        }
+// Build WhatsApp Link & Generate QR Code
+function generateWhatsAppPackage() {
+    const selectElem = document.getElementById('countrySelect');
+    if (!selectElem || !selectElem.value) return;
 
-        // Build WhatsApp Link & Generate QR Code
-        function generateWhatsAppPackage() {
-            const selectVal = document.getElementById('countrySelect').value;
-            const selectedCountry = JSON.parse(selectVal);
-            const rawPhone = document.getElementById('phoneInput').value;
-            const message = document.getElementById('messageInput').value;
+    const selectedCountry = JSON.parse(selectElem.value);
+    const rawPhone = document.getElementById('phoneInput') ? document.getElementById('phoneInput').value : '';
+    const message = document.getElementById('messageInput') ? document.getElementById('messageInput').value : '';
+    
+    const formattedPhone = formatGlobalPhoneNumber(rawPhone, selectedCountry.dial);
 
-            const formattedPhone = formatGlobalPhoneNumber(rawPhone, selectedCountry.dial);
+    if (!formattedPhone || formattedPhone.length < selectedCountry.dial.length + 5) {
+        return;
+    }
 
-            if (!formattedPhone || formattedPhone.length < selectedCountry.dial.length + 5) {
-                showToast('Please enter a valid phone number.', true);
-                return;
-            }
+    const encodedMsg = encodeURIComponent(message);
+    const waUrl = `https://wa.me/${formattedPhone}${encodedMsg ? '?text=' + encodedMsg : ''}`;
 
-            // Encode message for standard URL query
-            const encodedMsg = encodeURIComponent(message);
-            const waUrl = `https://wa.me/${formattedPhone}${encodedMsg ? '?text=' + encodedMsg : ''}`;
+    const linkInput = document.getElementById('generatedLinkInput');
+    const testBtn = document.getElementById('testLinkBtn');
+    if (linkInput) linkInput.value = waUrl;
+    if (testBtn) testBtn.href = waUrl;
 
-            // Update Link Box and Test Button
-            document.getElementById('generatedLinkInput').value = waUrl;
-            document.getElementById('testLinkBtn').href = waUrl;
+    const qrContainer = document.getElementById('qrcode');
+    if (qrContainer) {
+        qrContainer.innerHTML = '';
+        new QRCode(qrContainer, {
+            text: waUrl,
+            width: 160,
+            height: 160,
+            colorDark: "#0b141a",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
+}
 
-            // Generate QR Code dynamically inside the container
-            const qrContainer = document.getElementById('qrcode');
-            qrContainer.innerHTML = ''; // Clear previous QR
+// Copy Link to Clipboard
+function copyLinkToClipboard() {
+    const linkInput = document.getElementById('generatedLinkInput');
+    if (!linkInput || !linkInput.value || linkInput.value.includes('...')) {
+        return;
+    }
+    
+    linkInput.select();
+    document.execCommand('copy');
+    
+    const btnText = document.getElementById('copyBtnText');
+    if (btnText) {
+        btnText.textContent = 'Copied!';
+        setTimeout(() => { btnText.textContent = 'Copy'; }, 2000);
+    }
+}
 
-            qrcodeObj = new QRCode(qrContainer, {
-                text: waUrl,
-                width: 160,
-                height: 160,
-                colorDark: "#0b141a",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
-
-            showToast('Global Link and QR Code generated!');
-        }
-
-        // Copy Link to Clipboard
-        function copyLinkToClipboard() {
-            const linkInput = document.getElementById('generatedLinkInput');
-            
-            if (!linkInput.value || linkInput.value.includes('...')) {
-                showToast('Please generate a valid link first.', true);
-                return;
-            }
-
-            linkInput.select();
-            document.execCommand('copy');
-
-            const btnText = document.getElementById('copyBtnText');
-            btnText.textContent = 'Copied!';
-            setTimeout(() => { btnText.textContent = 'Copy'; }, 2000);
-
-            showToast('WhatsApp Link copied to clipboard!');
-        }
-
-        // Download Generated QR Code Image
-        function downloadQRCode() {
-            const qrCanvas = document.querySelector('#qrcode canvas');
-            const qrImg = document.querySelector('#qrcode img');
-
-            let imageURI = '';
-
-            if (qrCanvas) {
-                imageURI = qrCanvas.toDataURL("image/png");
-            } else if (qrImg) {
-                imageURI = qrImg.src;
-            }
-
-            if (!imageURI) {
-                showToast('Please generate a QR Code first.', true);
-                return;
-            }
-
-            const downloadLink = document.createElement('a');
-            downloadLink.href = imageURI;
-            downloadLink.download = `WhatsApp-QR-TerrenceMaja.png`;
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-
-            showToast('QR Code downloaded!');
-        }
-
-        // Custom Toast Notification System
-        function showToast(msg, isError = false) {
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toastMsg');
-
-            toastMsg.textContent = msg;
-
-            if (isError) {
-                toast.classList.remove('bg-emerald-600');
-                toast.classList.add('bg-red-600');
-            } else {
-                toast.classList.remove('bg-red-600');
-                toast.classList.add('bg-emerald-600');
-            }
-
-            toast.classList.remove('opacity-0', 'pointer-events-none');
-            toast.classList.add('opacity-100');
-
-            setTimeout(() => {
-                toast.classList.remove('opacity-100');
-                toast.classList.add('opacity-0', 'pointer-events-none');
-            }, 3000);
-        }
-
-        // Initialize application on load
-        window.onload = function() {
-            populateCountrySelect();
-            updatePreview();
-            generateWhatsAppPackage(); // Generate initial state preview
-        }
+// Initialize Application on Load
+window.onload = function() {
+    populateCountrySelect();
+    updatePreview();
+    generateWhatsAppPackage();
+};
     </script>
 <script>
   let deferredPrompt;
