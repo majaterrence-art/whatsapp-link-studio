@@ -100,7 +100,10 @@
                 </div>
             </div>
             
-            <div class="flex items-center space-x-2">
+           <div class="flex items-center space-x-2">
+               <button id="install-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition-all shadow-md">
+  📲 Install App
+</button>
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                     <span id="globalHeaderBadge">Global Coverage (240+ Countries)</span>
@@ -642,6 +645,40 @@
             updatePreview();
             generateWhatsAppPackage(); // Generate initial state preview
         }
-    </script>
+   // Initialize application on load
+      window.onload = function() {
+        populateCountrySelect();
+        updatePreview();
+        generateWhatsAppPackage(); // Generate initial state preview
+      }
+    }
+</script>
+
+<script>
+  let deferredPrompt;
+  const installBtn = document.getElementById('install-btn');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.classList.remove('hidden');
+  });
+
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        installBtn.classList.add('hidden');
+      }
+      deferredPrompt = null;
+    }
+  });
+
+  window.addEventListener('appinstalled', () => {
+    installBtn.classList.add('hidden');
+  });
+</script>
+
 </body>
 </html>
