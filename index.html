@@ -491,19 +491,32 @@
         ];
 
         // Populate Country Dropdown
-      function populateCountrySelect() {
+     // Helper to convert 2-letter country code (e.g. 'ZA') into Flag Emoji
+function getFlagEmoji(countryCode) {
+    if (!countryCode) return '';
+    return countryCode.toUpperCase().replace(/./g, char => 
+        String.fromCodePoint(127397 + char.charCodeAt(0))
+    );
+}
+
+// Populate Country Dropdown
+function populateCountrySelect() {
     const select = document.getElementById('countrySelect');
+    if (!select) return;
     select.innerHTML = '';
 
     countries.forEach(c => {
         const option = document.createElement('option');
-        option.value = JSON.stringify(c);
-        option.textContent = `${c.flag} ${c.name} (+${c.dial})`;
+        const flagEmoji = getFlagEmoji(c.flag || c.code);
+        
+        // Store full country object data on option value
+        option.value = JSON.stringify({ ...c, flagEmoji });
+        option.textContent = `${flagEmoji} ${c.name} (+${c.dial})`;
+        
         if (c.code === 'ZA') option.selected = true; // Default to South Africa
         select.appendChild(option);
     });
 }
-
 // Add this line here:
 populateCountrySelect();
         // Clean Phone Number & Prepend Selected Country Dial Code
@@ -511,27 +524,27 @@ populateCountrySelect();
             let cleaned = rawNumber.replace(/\D/g, '');
 
             // Strip leading zero if typed by user (e.g., 0821234567 -> 821234567)
-            if (cleaned.startsWith('0')) {
-                cleaned = cleaned.substring(1);
-            }
+            function updatePreview() {
+    const selectVal = document.getElementById('countrySelect').value;
+    if (!selectVal) return;
 
-            // If user typed the dial code themselves, strip it out to prevent duplication
-            if (cleaned.startsWith(dialCode)) {
-                cleaned = cleaned.substring(dialCode.length);
-            }
+    const selectedCountry = JSON.parse(selectVal);
 
-            return cleaned ? `${dialCode}${cleaned}` : '';
-        }
+    // Update Input Label displays
+    const flagDisp = document.getElementById('flagDisplay');
+    const dialDisp = document.getElementById('dialCodeDisplay');
+    if (flagDisp) flagDisp.textContent = selectedCountry.flagEmoji || getFlagEmoji(selectedCountry.code);
+    if (dialDisp) dialDisp.textContent = '+' + selectedCountry.dial;
 
-        // Live Preview Updater
-        function updatePreview() {
-            const selectVal = document.getElementById('countrySelect').value;
-            if (!selectVal) return;
+    const rawPhone = document.getElementById('phoneInput').value;
+    const message = document.getElementById('messageInput').value;
+    const formatted = formatGlobalPhoneNumber(rawPhone, selectedCountry.dial);
 
-            const selectedCountry = JSON.parse(selectVal);
-            
-            // Update input label displays
-            document.getElementById('flagDisplay').textContent = selectedCountry.flag;
+    const prevNum = document.getElementById('previewFormattedNum');
+    const prevBub = document.getElementById('previewBubbleText');
+    if (prevNum) prevNum.textContent = formatted ? `+${formatted}` : `+${selectedCountry.dial}...`;
+    if (prevBub) prevBub.textContent = message.trim() || "Hi Terrence! I'm interested in your services.";
+}
             document.getElementById('dialCodeDisplay').textContent = `+${selectedCountry.dial}`;
 
             const rawPhone = document.getElementById('phoneInput').value;
@@ -659,19 +672,17 @@ populateCountrySelect();
             }, 3000);
         }
 
-        // Initialize application on load
-        window.onload = function() {
-            populateCountrySelect();
-            updatePreview();
-            generateWhatsAppPackage(); // Generate initial state preview
-        }
-   // Initialize application on load
-      window.onload = function() {
-        populateCountrySelect();
-        updatePreview();
-        generateWhatsAppPackage(); // Generate initial state preview
-      }
-    }
+       // Initialize application on load
+window.onload = function() {
+    populateCountrySelect();
+    updatePreview();
+    generateWhatsAppPackage();
+}
+// Initialize application on load
+window.onload = function() {
+    populateCountrySelect();
+    updatePreview();
+}
 </script>
 
 <script>
