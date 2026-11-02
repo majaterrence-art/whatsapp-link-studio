@@ -491,19 +491,21 @@
         ];
 
         // Populate Country Dropdown
-        function populateCountrySelect() {
-            const select = document.getElementById('countrySelect');
-            select.innerHTML = '';
+      function populateCountrySelect() {
+    const select = document.getElementById('countrySelect');
+    select.innerHTML = '';
 
-            countries.forEach(c => {
-                const option = document.createElement('option');
-                option.value = JSON.stringify(c);
-                option.textContent = `${c.flag} ${c.name} (+${c.dial})`;
-                if (c.code === 'ZA') option.selected = true; // Default to South Africa
-                select.appendChild(option);
-            });
-        }
+    countries.forEach(c => {
+        const option = document.createElement('option');
+        option.value = JSON.stringify(c);
+        option.textContent = `${c.flag} ${c.name} (+${c.dial})`;
+        if (c.code === 'ZA') option.selected = true; // Default to South Africa
+        select.appendChild(option);
+    });
+}
 
+// Add this line here:
+populateCountrySelect();
         // Clean Phone Number & Prepend Selected Country Dial Code
         function formatGlobalPhoneNumber(rawNumber, dialCode) {
             let cleaned = rawNumber.replace(/\D/g, '');
