@@ -23,13 +23,14 @@
     <meta name="twitter:description" content="Generate instant WhatsApp chat links and QR codes with custom pre-filled messages." />
     <meta name="twitter:image" content="https://majaterrence-art.github.io/whatsapp-link-studio/og-image.png" />
 
-    <!-- Tailwind CSS -->
-   <!-- Windows Flag Emoji Fallback Polyfill -->
+   <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Windows Flag Emoji Fallback Polyfill -->
     <script type="module">
-      import { polyfillCountryFlagEmojis } from "https://cdn.skypack.dev/country-flag-emoji-polyfill";
-      polyfillCountryFlagEmojis();
+        import { polyfillCountryFlagEmojis } from "https://cdn.skypack.dev/country-flag-emoji-polyfill";
+        polyfillCountryFlagEmojis();
     </script>
-    <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
