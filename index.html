@@ -130,6 +130,13 @@
                 <button id="install-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition-all shadow-md">
                     📲 Install App
                 </button>
+                
+                <!-- Sign Up Button Added Here -->
+                <button onclick="openSignupModal()" class="bg-slate-800 hover:bg-slate-700 text-brand-500 border border-brand-500/30 font-medium px-3.5 py-2 rounded-lg text-sm transition-all flex items-center gap-1.5 shadow-md">
+                    <i class="fa-solid fa-user-plus text-xs"></i>
+                    <span id="navUserLabel">Sign Up</span>
+                </button>
+
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                     <span id="globalHeaderBadge">Global Coverage (240+ Countries)</span>
@@ -422,6 +429,36 @@
     <div id="toast" class="fixed bottom-5 right-5 bg-emerald-600 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-2xl opacity-0 pointer-events-none transition-all duration-300 flex items-center space-x-2 z-50">
         <i class="fa-solid fa-circle-check"></i>
         <span id="toastMsg">Link copied to clipboard!</span>
+    </div>
+
+    <!-- Sign Up / Account Modal -->
+    <div id="signupModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-brand-500/30 relative">
+            <button onclick="closeSignupModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-brand-600 to-brand-accent mx-auto flex items-center justify-center shadow-lg shadow-brand-500/20 mb-3">
+                    <i class="fa-solid fa-user-shield text-xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Create Your Studio Profile</h3>
+                <p class="text-xs text-slate-400 mt-1">Save your business details locally for fast generation.</p>
+            </div>
+            <form onsubmit="handleUserSignup(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium uppercase tracking-wider text-slate-300 mb-1.5">Your Name or Business Name</label>
+                    <input type="text" id="signupName" placeholder="e.g. Terrence Maja" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium uppercase tracking-wider text-slate-300 mb-1.5">Email Address</label>
+                    <input type="email" id="signupEmail" placeholder="terrence@example.com" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-brand-600 to-brand-accent hover:from-brand-500 hover:to-brand-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-brand-500/20 transition-all flex items-center justify-center gap-2 mt-2">
+                    <span>Save Profile & Start Studio</span>
+                    <i class="fa-solid fa-check text-sm"></i>
+                </button>
+            </form>
+        </div>
     </div>
 
     <!-- Application Script -->
@@ -836,11 +873,57 @@
             }
         }
 
+        // --- Studio User Signup & Profile Management ---
+        function openSignupModal() {
+            const modal = document.getElementById('signupModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeSignupModal() {
+            const modal = document.getElementById('signupModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function handleUserSignup(event) {
+            event.preventDefault();
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+
+            if (!name || !email) return;
+
+            const userProfile = { name, email, joined: new Date().toLocaleDateString() };
+            localStorage.setItem('terrence_studio_user', JSON.stringify(userProfile));
+
+            updateUserInterface(userProfile);
+            closeSignupModal();
+        }
+
+        function updateUserInterface(profile) {
+            const navBtnLabel = document.getElementById('navUserLabel');
+            const bizNamePreview = document.getElementById('previewBusinessName');
+
+            if (navBtnLabel) {
+                navBtnLabel.textContent = profile.name.split(' ')[0];
+            }
+            if (bizNamePreview) {
+                bizNamePreview.textContent = profile.name;
+            }
+        }
+
         // Initialize Application on Load & Setup Search Filter Listener
         window.onload = function() {
             populateCountrySelect();
             updatePreview();
             generateWhatsAppPackage();
+
+            // Check for saved user profile
+            const savedUser = localStorage.getItem('terrence_studio_user');
+            if (savedUser) {
+                try {
+                    const profile = JSON.parse(savedUser);
+                    updateUserInterface(profile);
+                } catch(e) {}
+            }
 
             // Hook up live search box
             const searchInput = document.getElementById('countrySearchInput');
