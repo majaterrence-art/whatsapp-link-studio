@@ -144,7 +144,7 @@
                 Turn any phone number into instant WhatsApp links & QR codes
             </h2>
             <p class="text-slate-400 text-sm sm:text-base">
-       <!-- Main Form Container -->
+      <!-- Main Form Container -->
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
     
     <!-- Left Column: Input Form (7 Cols) -->
@@ -162,6 +162,19 @@
                         Select Country & Enter Phone Number <span class="text-red-400">*</span>
                     </label>
 
+                    <!-- Global Country Search & Dropdown -->
+                    <div class="space-y-2">
+                        <input type="text" 
+                               id="countrySearchInput" 
+                               placeholder="🔍 Search country or dial code..." 
+                               class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2 text-white text-sm focus:outline-none focus:border-brand-500">
+
+                        <select id="countrySelect" 
+                                onchange="updatePreview()" 
+                                class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
                     <!-- Global Country Search & Dropdown -->
                     <div class="space-y-2">
                         <input type="text" 
