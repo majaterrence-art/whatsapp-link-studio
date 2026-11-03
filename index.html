@@ -756,7 +756,7 @@
             }
         }
 
-        // Build WhatsApp Link & Generate QR Code
+        // Build WhatsApp Link & Generate High-Resolution QR Code (300x300)
         function generateWhatsAppPackage() {
             const selectElem = document.getElementById('countrySelect');
             if (!selectElem || !selectElem.value) return;
@@ -789,13 +789,36 @@
                 qrContainer.innerHTML = '';
                 new QRCode(qrContainer, {
                     text: waUrl,
-                    width: 160,
-                    height: 160,
+                    width: 300,
+                    height: 300,
                     colorDark: "#0b141a",
                     colorLight: "#ffffff",
                     correctLevel: QRCode.CorrectLevel.H
                 });
             }
+        }
+
+        // Download High-Res QR Code PNG
+        function downloadQRCode() {
+            const qrContainer = document.getElementById('qrcode');
+            const img = qrContainer ? qrContainer.querySelector('img') : null;
+            const canvas = qrContainer ? qrContainer.querySelector('canvas') : null;
+
+            let imageSrc = '';
+            if (canvas) {
+                imageSrc = canvas.toDataURL("image/png");
+            } else if (img) {
+                imageSrc = img.src;
+            }
+
+            if (!imageSrc) return;
+
+            const downloadLink = document.createElement('a');
+            downloadLink.href = imageSrc;
+            downloadLink.download = 'WhatsApp-QR-Code.png';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
         }
 
         // Copy Link to Clipboard
