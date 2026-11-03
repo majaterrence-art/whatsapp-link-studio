@@ -1,4 +1,4 @@
-const CACHE_NAME = 'walink-studio-v2';
+const CACHE_NAME = 'walink-studio-v3';
 const ASSETS = [
   './',
   './index.html',
