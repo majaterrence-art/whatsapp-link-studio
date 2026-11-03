@@ -24,7 +24,11 @@
     <meta name="twitter:image" content="https://majaterrence-art.github.io/whatsapp-link-studio/og-image.png" />
 
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+   <!-- Windows Flag Emoji Fallback Polyfill -->
+    <script type="module">
+      import { polyfillCountryFlagEmojis } from "https://cdn.skypack.dev/country-flag-emoji-polyfill";
+      polyfillCountryFlagEmojis();
+    </script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -139,7 +143,97 @@
                 Turn any phone number into instant WhatsApp links & QR codes
             </h2>
             <p class="text-slate-400 text-sm sm:text-base">
-                Create ready-to-share WhatsApp links for any country worldwide. Perfect for social media bios, print ads, flyers, and business cards.
+       <!-- Main Form Container -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    
+    <!-- Left Column: Input Form (7 Cols) -->
+    <div class="lg:col-span-7 space-y-6">
+        <div class="glass-card rounded-2xl p-6 sm:p-8 shadow-xl">
+            <h3 class="text-lg font-semibold text-white mb-5 flex items-center gap-2">
+                <i class="fa-solid fa-earth-americas text-brand-500"></i> Configure Global Link Details
+            </h3>
+
+            <form id="linkForm" onsubmit="event.preventDefault(); generateWhatsAppPackage();" class="space-y-6">
+                
+                <!-- Country Select & Phone Input -->
+                <div class="space-y-3">
+                    <label class="block text-xs font-medium uppercase tracking-wider text-slate-300">
+                        Select Country & Enter Phone Number <span class="text-red-400">*</span>
+                    </label>
+
+                    <!-- Global Country Search & Dropdown -->
+                    <div class="space-y-2">
+                        <input type="text" 
+                               id="countrySearchInput" 
+                               placeholder="🔍 Search country or dial code..." 
+                               class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2 text-white text-sm focus:outline-none focus:border-brand-500">
+
+                        <select id="countrySelect" 
+                                onchange="updatePreview()" 
+                                class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <!-- Phone Number Input with Flag Badge -->
+                    <div class="flex rounded-xl overflow-hidden border border-slate-700 bg-slate-900/80 focus-within:border-brand-500 focus-within:ring-1 focus-within:ring-brand-500">
+                        <div class="px-3.5 py-3 bg-slate-800/80 border-r border-slate-700 text-slate-300 text-sm flex items-center space-x-2 font-mono">
+                            <span id="flagDisplay" class="text-base">🇿🇦</span>
+                            <span id="dialCodeDisplay" class="font-semibold">+27</span>
+                        </div>
+                        <input type="tel" 
+                               id="phoneInput" 
+                               placeholder="82 123 4567 or 082 123 4567" 
+                               class="w-full bg-transparent px-4 py-3 text-white placeholder-slate-500 focus:outline-none text-sm sm:text-base font-mono" 
+                               required 
+                               oninput="updatePreview()">
+                    </div>
+                </div>
+
+                <!-- Custom Client Message -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-medium uppercase tracking-wider text-slate-300">
+                        Pre-filled Client Message
+                    </label>
+                    <textarea id="messageInput" 
+                              rows="3" 
+                              placeholder="Hi Terrence! I'm interested in your services and would like to request a quote." 
+                              class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 text-sm" 
+                              oninput="updatePreview()"></textarea>
+
+                    <!-- Quick Presets -->
+                    <div class="mt-3">
+                        <span class="text-[11px] text-slate-400 block mb-2 font-medium">Quick Presets:</span>
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" 
+                                    onclick="setPreset('Hi! I would like to get a price quote for your services.')" 
+                                    class="px-3 py-1.5 text-xs rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700 transition-colors">
+                                💰 Quote Request
+                            </button>
+                            <button type="button" 
+                                    onclick="setPreset('Hello, I would like to make an appointment booking.')" 
+                                    class="px-3 py-1.5 text-xs rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700 transition-colors">
+                                📅 Book Appointment
+                            </button>
+                            <button type="button" 
+                                    onclick="setPreset('Hi there! I saw your item listed and want to inquire about availability.')" 
+                                    class="px-3 py-1.5 text-xs rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700 transition-colors">
+                                🛍️ Product Inquiry
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Submit Button -->
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-brand-600 to-brand-accent hover:from-brand-500 hover:to-brand-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2 transition-all">
+                    <span>Generate Link & QR Code</span>
+                    <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
             </p>
         </div>
 
