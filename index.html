@@ -50,7 +50,7 @@
         }
     </script>
 
-    <!-- Windows Flag Emoji Polyfill -->
+    <!-- Windows Flag Emoji Fallback Polyfill -->
     <script type="module">
         import { polyfillCountryFlagEmojis } from "https://cdn.skypack.dev/country-flag-emoji-polyfill";
         polyfillCountryFlagEmojis();
@@ -859,6 +859,13 @@
             const email = document.getElementById('signupEmail').value.trim();
 
             if (!name || !email) return;
+
+            // Strict Email Format Validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address structure (e.g., terrence@example.com).");
+                return;
+            }
 
             const userProfile = { name, email, joined: new Date().toLocaleDateString() };
             localStorage.setItem('terrence_studio_user', JSON.stringify(userProfile));
