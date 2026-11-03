@@ -50,7 +50,7 @@
         }
     </script>
 
-    <!-- Windows Flag Emoji Fallback Polyfill -->
+    <!-- Windows Flag Emoji Polyfill -->
     <script type="module">
         import { polyfillCountryFlagEmojis } from "https://cdn.skypack.dev/country-flag-emoji-polyfill";
         polyfillCountryFlagEmojis();
@@ -92,20 +92,10 @@
             border-left: 8px solid transparent;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0b132b;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #334155;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0b132b; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
@@ -131,11 +121,13 @@
                     📲 Install App
                 </button>
                 
-                <!-- Sign Up Button Added Here -->
-                <button onclick="openSignupModal()" class="bg-slate-800 hover:bg-slate-700 text-brand-500 border border-brand-500/30 font-medium px-3.5 py-2 rounded-lg text-sm transition-all flex items-center gap-1.5 shadow-md">
-                    <i class="fa-solid fa-user-plus text-xs"></i>
-                    <span id="navUserLabel">Sign Up</span>
-                </button>
+                <!-- Dynamic Auth / Sign Up Container -->
+                <div id="authContainer">
+                    <button onclick="openSignupModal()" class="bg-slate-800 hover:bg-slate-700 text-brand-500 border border-brand-500/30 font-medium px-3.5 py-2 rounded-lg text-sm transition-all flex items-center gap-1.5 shadow-md">
+                        <i class="fa-solid fa-user-plus text-xs"></i>
+                        <span id="navUserLabel">Sign Up</span>
+                    </button>
+                </div>
 
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -186,7 +178,6 @@
                                 <select id="countrySelect"
                                         onchange="updatePreview()"
                                         class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500">
-                                    <!-- Options populated dynamically via JavaScript -->
                                 </select>
                             </div>
 
@@ -304,7 +295,7 @@
                     </div>
                 </div>
 
-                <!-- Generated Output Card (Hidden initial state, revealed on submit) -->
+                <!-- Generated Output Card -->
                 <div id="outputCard" class="glass-card rounded-2xl p-6 shadow-xl border border-brand-500/30 transition-all duration-300">
                     <div class="flex items-center space-x-2 text-emerald-400 font-semibold text-sm mb-4">
                         <i class="fa-solid fa-circle-check text-base"></i>
@@ -442,7 +433,7 @@
                     <i class="fa-solid fa-user-shield text-xl text-white"></i>
                 </div>
                 <h3 class="text-xl font-bold text-white">Create Your Studio Profile</h3>
-                <p class="text-xs text-slate-400 mt-1">Save your business details locally for fast generation.</p>
+                <p class="text-xs text-slate-400 mt-1">Stored locally in your browser — no verification codes needed!</p>
             </div>
             <form onsubmit="handleUserSignup(event)" class="space-y-4">
                 <div>
@@ -465,7 +456,7 @@
     <script>
         let qrcodeObj = null;
 
-        // Complete Global Country List (245 Countries & Territories with Flags)
+        // Complete Global Country List
         const countries = [
             { code: "AF", name: "Afghanistan", dial: "93" },
             { code: "AX", name: "Aland Islands", dial: "358" },
@@ -717,7 +708,6 @@
             { code: "ZW", name: "Zimbabwe", dial: "263" }
         ];
 
-        // Helper to convert 2-letter country code to Flag Emoji dynamically
         function getFlagEmoji(countryCode) {
             if (!countryCode) return '';
             return countryCode.toUpperCase().replace(/./g, char => 
@@ -725,13 +715,10 @@
             );
         }
 
-        // Populate Country Dropdown with Flags and Support Search Filtering
         function populateCountrySelect(filterText = '') {
             const select = document.getElementById('countrySelect');
             if (!select) return;
-            
             select.innerHTML = '';
-
             const query = filterText.toLowerCase();
             const filtered = countries.filter(c => 
                 c.name.toLowerCase().includes(query) || c.dial.includes(query)
@@ -740,16 +727,13 @@
             filtered.forEach(c => {
                 const option = document.createElement('option');
                 const flagEmoji = getFlagEmoji(c.code);
-                
                 option.value = JSON.stringify({ ...c, flagEmoji });
                 option.textContent = `${flagEmoji} ${c.name} (+${c.dial})`;
-                
-                if (c.code === 'ZA' && !filterText) option.selected = true; // Default to South Africa
+                if (c.code === 'ZA' && !filterText) option.selected = true;
                 select.appendChild(option);
             });
         }
 
-        // Clean Phone Number & Prepend Selected Country Dial Code
         function formatGlobalPhoneNumber(rawNumber, dialCode) {
             let cleaned = rawNumber.replace(/\D/g, '');
             if (cleaned.startsWith('0')) cleaned = cleaned.substring(1);
@@ -757,17 +741,12 @@
             return cleaned ? `${dialCode}${cleaned}` : '';
         }
 
-        // Live Preview Updater
         function updatePreview() {
             const selectElem = document.getElementById('countrySelect');
             if (!selectElem || !selectElem.value) return;
 
             let selectedCountry;
-            try {
-                selectedCountry = JSON.parse(selectElem.value);
-            } catch(e) {
-                return;
-            }
+            try { selectedCountry = JSON.parse(selectElem.value); } catch(e) { return; }
 
             const flagDisp = document.getElementById('flagDisplay');
             const dialDisp = document.getElementById('dialCodeDisplay');
@@ -784,7 +763,6 @@
             if (prevBub) prevBub.textContent = message.trim() || "Hi Terrence! I'm interested in your services.";
         }
 
-        // Apply Quick Preset Message
         function setPreset(presetText) {
             const msgInput = document.getElementById('messageInput');
             if (msgInput) {
@@ -793,25 +771,18 @@
             }
         }
 
-        // Build WhatsApp Link & Generate High-Resolution QR Code (300x300)
         function generateWhatsAppPackage() {
             const selectElem = document.getElementById('countrySelect');
             if (!selectElem || !selectElem.value) return;
 
             let selectedCountry;
-            try {
-                selectedCountry = JSON.parse(selectElem.value);
-            } catch(e) {
-                return;
-            }
+            try { selectedCountry = JSON.parse(selectElem.value); } catch(e) { return; }
 
             const rawPhone = document.getElementById('phoneInput') ? document.getElementById('phoneInput').value : '';
             const message = document.getElementById('messageInput') ? document.getElementById('messageInput').value : '';
             const formattedPhone = formatGlobalPhoneNumber(rawPhone, selectedCountry.dial);
 
-            if (!formattedPhone || formattedPhone.length < selectedCountry.dial.length + 3) {
-                return;
-            }
+            if (!formattedPhone || formattedPhone.length < selectedCountry.dial.length + 3) return;
 
             const encodedMsg = encodeURIComponent(message);
             const waUrl = `https://wa.me/${formattedPhone}${encodedMsg ? '?text=' + encodedMsg : ''}`;
@@ -835,7 +806,6 @@
             }
         }
 
-        // Download High-Res QR Code PNG
         function downloadQRCode() {
             const qrContainer = document.getElementById('qrcode');
             const img = qrContainer ? qrContainer.querySelector('img') : null;
@@ -858,7 +828,6 @@
             document.body.removeChild(downloadLink);
         }
 
-        // Copy Link to Clipboard
         function copyLinkToClipboard() {
             const linkInput = document.getElementById('generatedLinkInput');
             if (!linkInput || !linkInput.value || linkInput.value.includes('...')) return;
@@ -873,7 +842,7 @@
             }
         }
 
-        // --- Studio User Signup & Profile Management ---
+        // --- Profile Sign In & Sign Out Functions ---
         function openSignupModal() {
             const modal = document.getElementById('signupModal');
             if (modal) modal.classList.remove('hidden');
@@ -899,24 +868,49 @@
         }
 
         function updateUserInterface(profile) {
-            const navBtnLabel = document.getElementById('navUserLabel');
+            const authContainer = document.getElementById('authContainer');
             const bizNamePreview = document.getElementById('previewBusinessName');
 
-            if (navBtnLabel) {
-                navBtnLabel.textContent = profile.name.split(' ')[0];
+            if (authContainer) {
+                if (profile) {
+                    // Logged In View
+                    authContainer.innerHTML = `
+                        <div class="flex items-center gap-2 bg-slate-900/90 border border-slate-700 px-3 py-1.5 rounded-xl">
+                            <span class="text-xs text-slate-200 font-medium flex items-center gap-1.5">
+                                <i class="fa-solid fa-user-check text-brand-500"></i> ${profile.name.split(' ')[0]}
+                            </span>
+                            <button onclick="handleUserSignout()" title="Sign Out" class="text-slate-400 hover:text-red-400 text-xs px-1.5 py-1 transition-colors">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    // Logged Out View
+                    authContainer.innerHTML = `
+                        <button onclick="openSignupModal()" class="bg-slate-800 hover:bg-slate-700 text-brand-500 border border-brand-500/30 font-medium px-3.5 py-2 rounded-lg text-sm transition-all flex items-center gap-1.5 shadow-md">
+                            <i class="fa-solid fa-user-plus text-xs"></i>
+                            <span id="navUserLabel">Sign Up</span>
+                        </button>
+                    `;
+                }
             }
+
             if (bizNamePreview) {
-                bizNamePreview.textContent = profile.name;
+                bizNamePreview.textContent = profile ? profile.name : "Your Business";
             }
         }
 
-        // Initialize Application on Load & Setup Search Filter Listener
+        function handleUserSignout() {
+            localStorage.removeItem('terrence_studio_user');
+            updateUserInterface(null);
+        }
+
         window.onload = function() {
             populateCountrySelect();
             updatePreview();
             generateWhatsAppPackage();
 
-            // Check for saved user profile
+            // Load Saved User Profile
             const savedUser = localStorage.getItem('terrence_studio_user');
             if (savedUser) {
                 try {
@@ -925,7 +919,6 @@
                 } catch(e) {}
             }
 
-            // Hook up live search box
             const searchInput = document.getElementById('countrySearchInput');
             if (searchInput) {
                 searchInput.addEventListener('input', (e) => {
