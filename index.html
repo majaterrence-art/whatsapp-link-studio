@@ -155,18 +155,26 @@
                     <form id="linkForm" onsubmit="event.preventDefault(); generateWhatsAppPackage();" class="space-y-6">
                         
                         <!-- Country Select & Phone Input -->
-                        <div class="space-y-3">
-                            <label class="block text-xs font-medium uppercase tracking-wider text-slate-300">
-                                Select Country & Enter Phone Number <span class="text-red-400">*</span>
-                            </label>
-                            
-                            <!-- Global Country Dropdown -->
-                            <div>
-                                <select 
-                                    id="countrySelect" 
-                                    onchange="updatePreview()" 
-                                    class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all font-sans cursor-pointer"
-                                >
+                       <div class="space-y-3">
+    <label class="block text-xs font-medium uppercase tracking-wider text-slate-300">
+        Select Country & Enter Phone Number <span class="text-red-400">*</span>
+    </label>
+
+    <!-- Global Country Dropdown -->
+    <div>
+        <!-- PASTE SEARCH INPUT HERE -->
+        <input type="text" 
+               id="countrySearchInput" 
+               placeholder="🔍 Search country or dial code..." 
+               class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2 mb-2 text-white text-sm focus:outline-none focus:border-brand-500">
+
+        <select id="countrySelect"
+                onchange="updatePreview()"
+                class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500">
+            <!-- Options populated dynamically via JavaScript -->
+        </select>
+    </div>
+</div>
                                     <!-- Options populated dynamically via JavaScript -->
                                 </select>
                             </div>
